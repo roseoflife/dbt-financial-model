@@ -1,0 +1,16 @@
+# models/sources.yml
+version: 2
+
+sources:
+  - name: raw
+    database: FINANCIAL_DB
+    schema: RAW
+    tables:
+      - name: transactions
+      - name: refunds
+  - name: source
+    database: FINANCIAL_DB
+    schema: SOURCE
+    tables:
+      - name: transactions
+      - name: refunds     

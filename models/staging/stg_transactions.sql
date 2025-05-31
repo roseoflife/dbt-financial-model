@@ -1,4 +1,4 @@
-# models/staging/stg_transactions.sql
+
 -- Staging model: Lightly transform raw transaction data
 {{ config(materialized='view') }}
 
@@ -10,4 +10,3 @@ SELECT
   currency AS transaction_currency
 FROM {{ source('raw', 'transactions') }}
 WHERE amount IS NOT NULL
-# models/staging/stg_transactions.sql end
