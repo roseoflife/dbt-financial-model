@@ -19,6 +19,7 @@ SELECT
   t.customer_id,
   t.transaction_date,
   SUM(t.transaction_amount - COALESCE(r.refund_amount, 0)) AS net_revenue
+--   {{ calculate_net_revenue('transaction_amount', 'refund_amount') }}
 FROM transactions t
 LEFT JOIN refunds r
   ON t.customer_id = r.customer_id

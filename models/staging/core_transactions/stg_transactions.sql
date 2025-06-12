@@ -1,12 +1,11 @@
-
 -- Staging model: Lightly transform raw transaction data
-{{ config(materialized='view') }}
+{{ config(materialized="view") }}
 
-SELECT
-  transaction_id,
-  customer_id,
-  transaction_date::DATE AS transaction_date,
-  amount::FLOAT AS transaction_amount,
-  currency AS transaction_currency
-FROM {{ source('raw', 'transactions') }}
-WHERE amount IS NOT NULL
+select
+    transaction_id,
+    customer_id,
+    transaction_date::date as transaction_date,
+    amount::float as transaction_amount,
+    currency as transaction_currency
+from {{ source("raw", "transactions") }}
+where amount is not null
