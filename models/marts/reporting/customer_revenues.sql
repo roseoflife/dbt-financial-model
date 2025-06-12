@@ -1,6 +1,5 @@
 -- Mart model: Aggregate revenue by customer for reporting
 {{ config(materialized='table') }}
-
 SELECT
   customer_id,
   DATE_TRUNC('month', transaction_date) AS month,

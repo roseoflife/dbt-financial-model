@@ -1,0 +1,15 @@
+version: 2
+models:
+  - name: stg_transactions
+    description: This table has basic information about a transaction, as well as some derived facts based on a revenues
+    columns:
+      - name: transaction_id
+        description: This is a unique identifier for a customer
+        tests:
+          - unique
+          - not_null
+
+
+
+
+   
