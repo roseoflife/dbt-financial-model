@@ -34,7 +34,7 @@ customer_monthly_base AS (
     AVG(avg_transaction_amount) AS avg_transaction_value,
     AVG(discount_percentage) AS avg_discount_rate
     
-  FROM {{ ref('int_net_revenue') }}
+  FROM {{ ref('int_net_revenues') }}
   {% if is_incremental() %}
     WHERE transaction_date >= (
       SELECT DATEADD('month', -3, MAX(revenue_month)) 
