@@ -1,6 +1,6 @@
 {{
   config(
-    materialized='incremental',
+    materialized='view',
     unique_key=['customer_id', 'transaction_date', 'transaction_currency']
   )
 }}
@@ -9,8 +9,8 @@ SELECT
     t.transaction_date,
     t.customer_id,
     t.transaction_currency,
-    SUM(t.transaction_amount) AS daily_revenue,
-    -- SUM(t.transaction_amount) AS total_revenue,
+    -- SUM(t.transaction_amount) AS daily_revenue,
+    SUM(t.transaction_amount) AS total_revenue,
     COUNT(*) AS transaction_count,
     AVG(t.transaction_amount) AS avg_amount
 FROM {{ ref('stg_transactions') }} t
