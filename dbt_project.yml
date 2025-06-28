@@ -27,7 +27,7 @@ models:
         +cluster_by: ['transaction_date', 'customer_id']
     marts:
       +materialized: table
-      mrt_customer_revenue:
+      mrt_customer_revenues:
         +materialized: incremental
         +unique_key: ['customer_id', 'revenue_month']
         +cluster_by: ['revenue_month', 'customer_segment']
