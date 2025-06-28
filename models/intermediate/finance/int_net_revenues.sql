@@ -1,15 +1,3 @@
--- SELECT 
---     t.transaction_date,
---     t.customer_id,
---     t.transaction_currency,
---     SUM(t.transaction_amount) AS total_revenue,
---     COUNT(*) AS transaction_count,
---     AVG(t.transaction_amount) AS avg_amount
--- FROM {{ ref('stg_transactions') }} t
--- GROUP BY 
---     t.transaction_date,
---     t.customer_id,
---     t.transaction_currency
 {{
   config(
     materialized='incremental',
