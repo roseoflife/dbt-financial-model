@@ -18,12 +18,21 @@ clean-targets:
   - "dbt_packages"
 
 models:
-  financial_model:
-    staging:
-      +materialized: view
+  dbt_financial_model:
     intermediate:
       +materialized: table
+      int_net_revenues:
+        +materialized: incremental
+        +unique_key: 'transaction_date'
+        +cluster_by: ['transaction_date', 'customer_id']
     marts:
       +materialized: table
-
-# dbt_project.yml end
+      mrt_customer_revenues:
+        +materialized: incremental
+        +unique_key: ['customer_id', 'revenue_month']
+        +cluster_by: ['revenue_month', 'customer_segment']
+        +partition_by: {
+          'field': 'revenue_month',
+          'data_type': 'date',
+          'granularity': 'month'
+        }

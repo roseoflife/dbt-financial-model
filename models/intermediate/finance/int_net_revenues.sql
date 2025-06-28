@@ -1,25 +1,35 @@
--- Intermediate model: Calculate net revenue from transactions and refunds
-{{ config(materialized='table') }}
-WITH transactions AS (
-  SELECT
-    customer_id,
-    transaction_date,
-    transaction_amount
-  FROM {{ ref('stg_transactions') }}
-),
-refunds AS (
-  SELECT
-    customer_id,
-    refund_date,
-    refund_amount
-  FROM {{ source('raw', 'refunds') }}
-)
-SELECT
-  t.customer_id,
-  t.transaction_date,
-  SUM(t.transaction_amount - COALESCE(r.refund_amount, 0)) AS net_revenue
-FROM transactions t
-LEFT JOIN refunds r
-  ON t.customer_id = r.customer_id
-  AND t.transaction_date = r.refund_date
-GROUP BY t.customer_id, t.transaction_date
+-- SELECT 
+--     t.transaction_date,
+--     t.customer_id,
+--     t.transaction_currency,
+--     SUM(t.transaction_amount) AS total_revenue,
+--     COUNT(*) AS transaction_count,
+--     AVG(t.transaction_amount) AS avg_amount
+-- FROM {{ ref('stg_transactions') }} t
+-- GROUP BY 
+--     t.transaction_date,
+--     t.customer_id,
+--     t.transaction_currency
+{{
+  config(
+    materialized='incremental',
+    unique_key=['customer_id', 'transaction_date', 'transaction_currency']
+  )
+}}
+
+SELECT 
+    t.transaction_date,
+    t.customer_id,
+    t.transaction_currency,
+    SUM(t.transaction_amount) AS total_revenue,
+    COUNT(*) AS transaction_count,
+    AVG(t.transaction_amount) AS avg_amount
+FROM {{ ref('stg_transactions') }} t
+WHERE t.transaction_date >= CURRENT_DATE() - INTERVAL '13 months'
+{% if is_incremental() %}
+  AND t.transaction_date >= (SELECT MAX(transaction_date) FROM {{ this }})
+{% endif %}
+GROUP BY 
+    t.transaction_date,
+    t.customer_id,
+    t.transaction_currency

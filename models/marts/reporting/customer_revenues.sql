@@ -1,9 +1,23 @@
--- Mart model: Aggregate revenue by customer for reporting
-{{ config(materialized='table') }}
-SELECT
-  customer_id,
-  DATE_TRUNC('month', transaction_date) AS month,
-  SUM(net_revenue) AS total_revenue
+{{
+  config(
+    materialized='incremental',
+    unique_key=['customer_id', 'revenue_month']
+  )
+}}
+
+SELECT 
+    DATE_TRUNC('month', transaction_date) AS revenue_month,
+    customer_id,
+    SUM(total_revenue) AS monthly_revenue,
+    SUM(transaction_count) AS monthly_transactions
 FROM {{ ref('int_net_revenues') }}
-GROUP BY customer_id, month
-ORDER BY customer_id, month
+{% if is_incremental() %}
+  -- Only run this filter on subsequent runs (not first run)
+  WHERE transaction_date >= (
+    SELECT DATEADD('month', -1, MAX(revenue_month)) 
+    FROM {{ this }}
+  )
+{% endif %}
+GROUP BY 
+    DATE_TRUNC('month', transaction_date),
+    customer_id
