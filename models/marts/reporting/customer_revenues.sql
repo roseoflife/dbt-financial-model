@@ -3,7 +3,7 @@
 SELECT 
     DATE_TRUNC('month', transaction_date) AS revenue_month,
     customer_id,
-    SUM(daily_revenue) AS monthly_revenue,
+    SUM(total_revenue) AS monthly_revenue,
     SUM(transaction_count) AS monthly_transactions
 FROM {{ ref('int_net_revenues') }}
 GROUP BY 
