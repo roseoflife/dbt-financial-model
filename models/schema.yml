@@ -1,47 +1,29 @@
-# # models/schema.yml (Enhanced version)
-# version: 2
-# models:
-#   - name: stg_transactions
-#     description: "Cleaned transaction data from raw source"
-#     columns:
-#       - name: transaction_id
-#         description: "Unique identifier for each transaction"
-#         tests:
-#           - unique
-#           - not_null
-#       - name: customer_id
-#         description: "Customer identifier"
-#         tests:
-#           - not_null
-#       - name: transaction_amount
-#         description: "Transaction amount in local currency"
-#         tests:
-#           - not_null
-#           - dbt_utils.accepted_range:
-#               min_value: 0
+# models/schema.yml (Enhanced version)
+version: 2
+models:
+  - name: stg_transactions
+    description: "Cleaned transaction data from raw source"
+    columns:
+      - name: transaction_id
+        description: "Unique identifier for each transaction"
+        tests:
+          - unique
+          - not_null
+      - name: customer_id
+        description: "Customer identifier"
+        tests:
+          - not_null
+      - name: transaction_amount
+        description: "Transaction amount in local currency"
+        tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              min_value: 0
 
-#   - name: int_net_revenues
-#     description: "Net revenue calculations after refunds"
-#     columns:
-#       - name: customer_id
-#         tests:
-#           - not_null
-#       - name: net_revenue
-#         description: "Revenue after refunds applied"
-#         tests:
-#           - not_null
-          
-#   - name: customer_revenues
-#     description: "Monthly revenue aggregated by customer"
-#     columns:
-#       - name: customer_id
-#         tests:
-#           - not_null
-#       - name: month
-#         tests:
-#           - not_null
-#       - name: total_revenue
-#         tests:
-#           - not_null
-#           - dbt_utils.accepted_range:
-#               min_value: 0
+  - name: int_net_revenues
+    description: "Net revenue calculations after refunds"
+    columns:
+      - name: customer_id
+        tests:
+          - not_null
+        
