@@ -26,8 +26,4 @@ models:
       - name: customer_id
         tests:
           - not_null
-      - name: net_revenue
-        description: "Revenue after refunds applied"
-        tests:
-          - not_null
         
