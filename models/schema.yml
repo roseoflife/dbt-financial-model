@@ -13,12 +13,20 @@ models:
         description: "Customer identifier"
         tests:
           - not_null
+      # - name: transaction_amount
+      #   description: "Transaction amount in local currency"
+      #   tests:
+      #     - not_null
+      #     - dbt_utils.accepted_range:
+      #         min_value: 0
+
       - name: transaction_amount
         description: "Transaction amount in local currency"
         tests:
-          - not_null
-          - dbt_utils.accepted_range:
-              min_value: 0
+            - not_null
+            - dbt_utils.accepted_range:
+                min_value: 10000
+                max_value: 5000        
 
   - name: int_net_revenues
     description: "Net revenue calculations after refunds"
