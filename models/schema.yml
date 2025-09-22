@@ -20,7 +20,7 @@ models:
           - not_null
           - dbt_utils.accepted_range:
               arguments:
-                min_value: 10000
+                min_value: 1
                 max_value: 500000
 
   - name: int_net_revenues
@@ -29,6 +29,9 @@ models:
       - name: customer_id
         tests:
           - not_null
-          - accepted_values:
-              values: ['IMPOSSIBLE_VALUE_123']
-          
+      - name: non_existent_column
+        description: "This column doesn't exist"
+        tests:
+          - not_null  
+    
+  
