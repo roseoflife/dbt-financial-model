@@ -29,7 +29,7 @@ models:
       - name: customer_id
         tests:
           - not_null
-      - name: non_existent_column
+      - name: non_existent_column_name
         description: "This column doesn't exist"
         tests:
           - not_null  
