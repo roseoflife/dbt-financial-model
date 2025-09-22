@@ -1,5 +1,6 @@
 # models/schema.yml (Enhanced version)
 version: 2
+
 models:
   - name: stg_transactions
     description: "Cleaned transaction data from raw source"
@@ -13,24 +14,24 @@ models:
         description: "Customer identifier"
         tests:
           - not_null
-         # - name: transaction_amount
-      #   description: "Transaction amount in local currency"
-      #   tests:
-      #     - not_null
-      #     - dbt_utils.accepted_range:
-      #         min_value: 0
+      - name: transaction_amount
+        description: "Transaction amount in local currency"
+        tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              arguments:
+                min_value: 1
+                max_value: 500000
 
-  - name: transaction_amount
-    description: "Transaction amount in local currency"
-    tests:
-        - not_null
-        - dbt_utils.accepted_range:
-            min_value: 10000
-            max_value: 5000       
   - name: int_net_revenues
     description: "Net revenue calculations after refunds"
     columns:
       - name: customer_id
         tests:
           - not_null
-        
+      - name: non_existent_column
+        description: "This column doesn't exist"
+        tests:
+          - not_null  
+    
+  
