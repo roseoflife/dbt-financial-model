@@ -1,11 +1,9 @@
 -- Mart model: Aggregate revenue by customer for reporting
-{{ config(materialized='table') }}
-SELECT 
-    DATE_TRUNC('month', transaction_date) AS revenue_month,
+{{ config(materialized="table") }}
+select
+    date_trunc('month', transaction_date) as revenue_month,
     customer_id,
-    SUM(daily_revenue) AS monthly_revenue,
-    SUM(transaction_count) AS monthly_transactions
-FROM {{ ref('int_net_revenues') }}
-GROUP BY 
-    DATE_TRUNC('month', transaction_date),
-    customer_id
+    sum(total_revenue) as monthly_revenue,
+    sum(transaction_count) as monthly_transactions
+from {{ ref("int_net_revenues") }}
+group by date_trunc('month', transaction_date), customer_id
